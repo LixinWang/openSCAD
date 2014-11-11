@@ -1,0 +1,69 @@
+//module for body of the car (bottom is hollowed out)
+module carBody(x,y,z){
+difference(){
+	#cube([x,y,z], center=true);
+ 	translate([0,0,-1])
+	#cube([x-2, y-2, z-1.99], center=true);
+	} //end difference
+} //end module
+
+carBody(16,36,8); //calling the module
+
+
+//the wheels on the 3D printed car go round & round...
+for(y=[-8,8],    //front&back
+	z=[-8.5,6.5])    //left&right
+{
+	rotate([0,90,0]){
+	 translate([4,y,z]){
+	  color([0,0,0])
+	   cylinder(h=2, r=4);
+	} //end translate
+	} //end rotate
+} //end for loop
+
+
+//Car roof
+shape = 6; //<-you can choose the shape of the roof by changing the number (Ex. shape = 8 will give you an octogonal roof. Any number not greater or equal to 6 will default to a pentagonal roof)
+
+if (shape >= 6){
+	intersection(){
+	translate([0,0,4])
+	cube([16,32,8], center=true);
+	rotate([0,0,90]){
+	translate([2,0,4]){
+	#resize(newsize=[24,15.5,10])
+		sphere(r=5, $fn=shape);
+	} //end translate
+} //end rotate
+} //end intersection
+
+} else{
+	intersection(){
+	translate([0,0,4])
+	cube([16,32,8], center=true);
+	rotate([0,0,90]){
+	translate([2,0,4]){
+	#resize(newsize=[24,15.5,10])
+		sphere(r=5, $fn=5);
+	} //end translate
+} //end rotate
+} //end intersection
+}
+
+
+//a snazzy spoiler
+translate([0,17,6]){
+ hull(){
+
+	translate([0,-2,-2]){
+	rotate([90,30,90]){
+	 cylinder(h=16, r1= 1, r2=1, $fn=3, center=true);
+	} //end rotate
+	} //end translate
+
+	rotate([90,-30,90]){
+	 cylinder(h=16, r1= 1, r2=1, $fn=3, center=true);
+	} //end rotate
+ } //end hull
+} //end translation of hull
